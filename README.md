@@ -18,7 +18,7 @@ Purpose: Python-based test automation framework for https://restful-booker.herok
 |**Mocking**|Postman Mock Server|`responses` library|
 |**Reports**|HTML via htmlextra|HTML via pytest-html|
 |**Maintainability**|GUI-based|Code-based|
-> Note: Postman solution - https://github.com/teranastasi9-source/restful_booker_postman
+> Note: Postman solution - see [https://github.com/teranastasi9-source/restful_booker_postman](https://github.com/teranastasi9-source/restful_booker_postman)
 
 
 ## This project demonstrates:
@@ -203,4 +203,5 @@ Issue: ModuleNotFoundError: No module named '...'
 ## Contact
 - Anastasiia Zatorska
 - Email: teranastasi9@gmail.com
+
 - LinkedIn: http://www.linkedin.com/in/anastasiia9-zatorska
