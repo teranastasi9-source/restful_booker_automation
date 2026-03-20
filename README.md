@@ -181,8 +181,8 @@ git clone https://github.com/yourusername/restful_booker_automation.git
 pip install -r requirements.txt
 
 ### Run specific test
-pytest tests/test_workflow_1.py -v -s
-pytest -m workflow3
+- pytest tests/test_workflow_1.py -v -s
+- pytest -m workflow3
 
 ### Run all tests
 pytest tests/ -v -s
