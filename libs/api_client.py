@@ -27,9 +27,9 @@ class BookerAPIClient:
         response_time = round(((end_time - start_time) * 1000), 2)
 
         if response_time > int(max_time):
-            raise TimeoutError(f"Response time {response_time}ms exceeds {max_time}ms")
+            raise TimeoutError(f"Response time: {response_time}ms > {max_time}ms")
         else:
-            print(f"\nResponse time {response_time}ms is below {max_time}ms")
+            print(f"Response time: {response_time}ms < {max_time}ms")
         return response
 
     def create_token(self, username: str, password: str) -> requests.Response:
