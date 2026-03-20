@@ -172,7 +172,7 @@ restful_booker_automation/
 
 
 ## Test execution
-### Rename .env.example file to .env
+### Rename 'env.example' file to '.env'
 
 ### Clone the repository
 git clone https://github.com/yourusername/restful_booker_automation.git
