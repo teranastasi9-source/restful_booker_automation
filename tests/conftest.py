@@ -1,5 +1,6 @@
-import pytest, requests, os, logging
-from restful_booker_automation.libs.api_client import BookerAPIClient
+import pytest, requests, os
+from api_tests.restful_booker_automation.libs.api_client import BookerAPIClient
+from api_tests.restful_booker_automation.libs.api_validate import APIValidate
 from dotenv import load_dotenv
 
 # Load environment variables (*.env)
@@ -22,3 +23,10 @@ def health_check(api_client):
     except requests.exceptions.RequestException as e:
         pytest.fail(f"Healthcheck failed - API not available: {str(e)}")
     yield
+
+
+@pytest.fixture(scope="function")
+def api_validate():
+    """ Function-scoped fixture: create instance for each test to perform validations"""
+    max_time = int(os.getenv("MAX_RESPONSE_TIME", 1000))
+    return APIValidate(max_response_time=max_time)

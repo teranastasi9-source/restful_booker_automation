@@ -1,4 +1,4 @@
-# RESTful Booker API Test Automation - Python + Pytest
+# RESTful Booker API Test Automation - Python + requests
 
 Purpose: Python-based test automation framework for https://restful-booker.herokuapp.com. Portfolio demonstration of API automation and pytest best practices]
 
@@ -18,7 +18,7 @@ Purpose: Python-based test automation framework for https://restful-booker.herok
 |**Mocking**|Postman Mock Server|`responses` library|
 |**Reports**|HTML via htmlextra|HTML via pytest-html|
 |**Maintainability**|GUI-based|Code-based|
-> Note: Postman solution - see [https://github.com/teranastasi9-source/restful_booker_postman](https://github.com/teranastasi9-source/restful_booker_postman)
+> Note: Postman solution - https://github.com/teranastasi9-source/restful_booker_postman
 
 
 ## This project demonstrates:
@@ -35,6 +35,8 @@ restful_booker_automation/
   - libs/
     - api_client.py           
     > API client wrapper for RESTful Booker
+    - api_validate.py
+    > validation methods for for RESTful Booker
   - reports/
     - report_IntegrationWorkflows.html
     > Generated HTML report
@@ -167,20 +169,23 @@ restful_booker_automation/
 
 ## Prerequisites
 - Python 3.8+ installed
-- pip install -r requirements.txt
 
 
 ## Test execution
+### Rename .env.example file to .env
+
+### Clone the repository
+git clone https://github.com/yourusername/restful_booker_automation.git
+
+### Install dependencies
+pip install -r requirements.txt
+
 ### Run specific test
 pytest tests/test_workflow_1.py -v -s
 pytest -m workflow3
 
 ### Run all tests
 pytest tests/ -v -s
-
-
-## Configuration
-Variables are stored in *.env file
 
 
 ## Expected output
@@ -203,5 +208,4 @@ Issue: ModuleNotFoundError: No module named '...'
 ## Contact
 - Anastasiia Zatorska
 - Email: teranastasi9@gmail.com
-
 - LinkedIn: http://www.linkedin.com/in/anastasiia9-zatorska
