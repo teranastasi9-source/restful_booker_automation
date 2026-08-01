@@ -15,6 +15,7 @@ class TestWorkFlow3:
     created_booking_ids = []
 
     def test_create_token(self, api_client, api_validate):
+        """Verify a valid auth token is issued for correct credentials."""
         logger.info(f"Step 1: Given valid authentication credentials\n\tWhen I request an authentication token"
                     f"\n\tThen I receive a valid token\n")
 
@@ -39,6 +40,7 @@ class TestWorkFlow3:
                              ids=[i for i in range(1, 6)])
     def test_create_booking_various_travelers(self, api_client, api_validate, firstname, lastname, totalprice,
                                                                 depositpaid, checkin, checkout, additionalneeds):
+        """Verify each of several concurrently-created bookings gets a unique ID and stores its own data correctly."""
         logger.info(f"Step 2: When I create a new booking (no auth required)"
                     f"\n\tThen the booking is created with unique ID\n\tAnd all booking details match creation data\n")
 
@@ -79,20 +81,21 @@ class TestWorkFlow3:
 
 
     def test_get_all_booking_ids(self, api_client, api_validate):
-         logger.info(f"\nStep 3: When I retrieve all booking IDs"
+        """Verify all bookings created in the previous step appear in the full list, each exactly once."""
+        logger.info(f"\nStep 3: When I retrieve all booking IDs"
                     f"\n\tThen the new bookings appear in the list\n\tAnd each booking_id occurs once")
 
-         # Request GET to retrieve ids of all the bookings that exist within the API
-         response = api_client.get_all_booking_ids()
-         res_body = response.json()
-         logger.info(f"GetBookingIds response: {res_body}")
-         logger.info(f"\nCreated booking IDs: {self.created_booking_ids}")
+        # Request GET to retrieve ids of all the bookings that exist within the API
+        response = api_client.get_all_booking_ids()
+        res_body = response.json()
+        logger.info(f"GetBookingIds response: {res_body}")
+        logger.info(f"\nCreated booking IDs: {self.created_booking_ids}")
 
-         # Verify status code -> 200 Success
-         api_validate.assert_status_code(response, 200)
+        # Verify status code -> 200 Success
+        api_validate.assert_status_code(response, 200)
 
-         # Verify response body contains booking_id and occurs 1 time -> booking_id is returned
-         booking_ids = [booking["bookingid"] for booking in res_body]
-         for booking_id in self.created_booking_ids:
-             assert booking_id in booking_ids, f"Created booking_id: {booking_id} isn`t present in all booking IDs list"
-             assert booking_ids.count(booking_id) == 1, f"Created booking_id: {booking_id} occurs more than once"
+        # Verify response body contains booking_id and occurs 1 time -> booking_id is returned
+        booking_ids = [booking["bookingid"] for booking in res_body]
+        for booking_id in self.created_booking_ids:
+            assert booking_id in booking_ids, f"Created booking_id: {booking_id} isn`t present in all booking IDs list"
+            assert booking_ids.count(booking_id) == 1, f"Created booking_id: {booking_id} occurs more than once"

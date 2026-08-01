@@ -1,6 +1,6 @@
 import pytest, requests, os
-from api_tests.restful_booker_automation.libs.api_client import BookerAPIClient
-from api_tests.restful_booker_automation.libs.api_validate import APIValidate
+from libs.api_client import BookerAPIClient
+from libs.api_validate import APIValidate
 from dotenv import load_dotenv
 
 # Load environment variables (*.env)
