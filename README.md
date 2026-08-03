@@ -30,30 +30,27 @@ Purpose: Python-based test automation framework for https://restful-booker.herok
   - Documentation and reproducibility practices
 
 
-##  Project structure
+## Project structure
+```
 restful_booker_automation/
-  - libs/
-    - api_client.py           
-    > API client wrapper for RESTful Booker
-    - api_validate.py
-    > validation methods for for RESTful Booker
-  - reports/
-    - report_IntegrationWorkflows.html
-    > Generated HTML report
-  - tests/
-    - test_workflow_1.py     
-    > Workflow 1: Full CRUD Lifecycle
-    - test_workflow_2.py         
-    > Workflow 2: Authentication Token Lifecycle
-    - test_workflow_3.py    
-    > Workflow 3: Multiple concurrent bookings
-  - .env                         
-    > Environment variables
-  - pytest.ini                       
-    > pytest configuration
-  - requirements.txt
-    > Python dependencies
-  - README.md 
+  .claude/skills/                    - project-scoped Claude Code skills (see below)
+  CLAUDE.md                            - code-review checklist read by Claude Code
+  docs/report_screenshot.png             - report screenshot embedded below, for a no-clone preview
+  libs/
+    api_client.py                          - API client wrapper for RESTful Booker
+    api_validate.py                        - validation methods for RESTful Booker
+  reports/
+    report_IntegrationWorkflows.html         - generated HTML report
+    test_logs.log                            - generated text log
+  tests/
+    conftest.py                                - fixtures (api_client, health_check, api_validate)
+    test_workflow_1.py                           - Workflow 1: Full CRUD Lifecycle
+    test_workflow_2.py                           - Workflow 2: Authentication Token Lifecycle
+    test_workflow_3.py                           - Workflow 3: Multiple concurrent bookings
+  .env                                    - environment variables (not committed)
+  pytest.ini                                - pytest configuration
+  requirements.txt                            - Python dependencies
+```
 
 
 ## Integration Workflows -> tests/
@@ -198,6 +195,11 @@ Report includes:
   - Pass/fail status per test step
   - Test step duration
   - Summary dashboard
+
+A recent run's report is committed at `reports/report_IntegrationWorkflows.html` so you can
+see the results without running anything - open it directly in a browser.
+
+![HTML test report](docs/report_screenshot.png)
 
 
 ## Troubleshooting

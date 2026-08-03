@@ -7,3 +7,10 @@ __pycache__/
 
 # pytest
 .pytest_cache/
+
+# IDE
+.idea/
+.vscode/
+
+# Windows folder metadata
+desktop.ini
