@@ -28,6 +28,8 @@ jobs:
     name: Tests
     needs: lint
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     env:
       # Public restful-booker demo values (not secrets) - same ones documented
       # in env.example. MAX_RESPONSE_TIME leaves headroom for CI network
@@ -53,3 +55,28 @@ jobs:
           name: test-report
           path: reports/
           retention-days: 14
+      - name: Open an issue on nightly failure
+        # Only for the scheduled run, not push/PR/workflow_dispatch - those are
+        # already being watched live. Not a verdict on whether this is a real
+        # regression or an external-API flake (see triage-api-test-failure
+        # skill) - just a "don't let this go unnoticed" safety net.
+        if: failure() && github.event_name == 'schedule'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Nightly test run failed (run #${context.runNumber})`,
+              body: [
+                `The scheduled nightly test run failed.`,
+                ``,
+                `Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                ``,
+                `Not yet triaged - this could be a real regression or an external-API`,
+                `hiccup (the free Heroku dyno this API runs on can be slow to wake up).`,
+                `Use the \`triage-api-test-failure\` skill (re-run in isolation, verify`,
+                `the external state directly) before assuming either way.`
+              ].join("\n"),
+              labels: ["bug", "ci-failure"]
+            })

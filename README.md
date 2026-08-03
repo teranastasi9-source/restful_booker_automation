@@ -217,6 +217,14 @@ ruff check .          # report issues
 ruff check . --fix    # auto-fix what can be auto-fixed (import sorting, unused imports, ...)
 ```
 
+## CI
+
+Runs on every push/PR, plus a daily scheduled run and manual `workflow_dispatch` (see
+`.github/workflows/tests.yml`). If the **scheduled** run fails, a GitHub Issue is opened
+automatically (push/PR/manual runs are already being watched live, so they don't) - a "don't
+let this go unnoticed" safety net, not a verdict on whether it's a real regression or an
+external-API hiccup (see the `triage-api-test-failure` skill).
+
 
 ## Troubleshooting
 Issue: ModuleNotFoundError: No module named '...'
