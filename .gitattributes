@@ -1,0 +1,3 @@
+# Generated test report - exclude from GitHub's language statistics so the
+# Languages bar reflects actual source code (Python), not the committed HTML report.
+reports/*.html linguist-generated=true
