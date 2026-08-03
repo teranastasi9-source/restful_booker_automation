@@ -1,5 +1,7 @@
 # RESTful Booker API Test Automation - Python + requests
 
+[![Tests](https://github.com/teranastasi9-source/restful_booker_automation/actions/workflows/tests.yml/badge.svg)](https://github.com/teranastasi9-source/restful_booker_automation/actions/workflows/tests.yml)
+
 Purpose: Python-based test automation framework for https://restful-booker.herokuapp.com. Portfolio demonstration of API automation and pytest best practices.
 
 ## Project Overview
@@ -33,23 +35,26 @@ Purpose: Python-based test automation framework for https://restful-booker.herok
 ## Project structure
 ```
 restful_booker_automation/
-  .claude/skills/                    - project-scoped Claude Code skills (see below)
-  CLAUDE.md                            - code-review checklist read by Claude Code
-  docs/report_screenshot.png             - report screenshot embedded below, for a no-clone preview
+  .github/workflows/tests.yml          - CI: lint + tests on push/PR, nightly schedule, manual
+  .claude/skills/                        - project-scoped Claude Code skills (see below)
+  CLAUDE.md                                - code-review checklist read by Claude Code
+  docs/report_screenshot.png                 - report screenshot embedded below, for a no-clone preview
+  pyproject.toml                               - ruff config
+  requirements-dev.txt                           - + ruff, for linting
   libs/
-    api_client.py                          - API client wrapper for RESTful Booker
-    api_validate.py                        - validation methods for RESTful Booker
+    api_client.py                                    - API client wrapper for RESTful Booker
+    api_validate.py                                  - validation methods for RESTful Booker
   reports/
-    report_IntegrationWorkflows.html         - generated HTML report
-    test_logs.log                            - generated text log
+    report_IntegrationWorkflows.html                   - generated HTML report
+    test_logs.log                                      - generated text log
   tests/
-    conftest.py                                - fixtures (api_client, health_check, api_validate)
-    test_workflow_1.py                           - Workflow 1: Full CRUD Lifecycle
-    test_workflow_2.py                           - Workflow 2: Authentication Token Lifecycle
-    test_workflow_3.py                           - Workflow 3: Multiple concurrent bookings
-  .env                                    - environment variables (not committed)
-  pytest.ini                                - pytest configuration
-  requirements.txt                            - Python dependencies
+    conftest.py                                          - fixtures (api_client, health_check, api_validate)
+    test_workflow_1.py                                     - Workflow 1: Full CRUD Lifecycle
+    test_workflow_2.py                                     - Workflow 2: Authentication Token Lifecycle
+    test_workflow_3.py                                     - Workflow 3: Multiple concurrent bookings
+  .env                                              - environment variables (not committed)
+  pytest.ini                                          - pytest configuration
+  requirements.txt                                      - Python dependencies
 ```
 
 
@@ -200,6 +205,17 @@ A recent run's report is committed at `reports/report_IntegrationWorkflows.html`
 see the results without running anything - open it directly in a browser.
 
 ![HTML test report](docs/report_screenshot.png)
+
+
+## Linting
+
+Code style is checked with [ruff](https://docs.astral.sh/ruff/) (config in `pyproject.toml`).
+
+```bash
+pip install -r requirements-dev.txt
+ruff check .          # report issues
+ruff check . --fix    # auto-fix what can be auto-fixed (import sorting, unused imports, ...)
+```
 
 
 ## Troubleshooting

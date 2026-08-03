@@ -1,5 +1,9 @@
-import pytest, os, logging
+import logging
+import os
+
+import pytest
 from dotenv import load_dotenv
+
 logger = logging.getLogger(__name__)
 
 # Load environment variables (*.env)
@@ -16,8 +20,8 @@ class TestWorkFlow3:
 
     def test_create_token(self, api_client, api_validate):
         """Verify a valid auth token is issued for correct credentials."""
-        logger.info(f"Step 1: Given valid authentication credentials\n\tWhen I request an authentication token"
-                    f"\n\tThen I receive a valid token\n")
+        logger.info("Step 1: Given valid authentication credentials\n\tWhen I request an authentication token"
+                    "\n\tThen I receive a valid token\n")
 
         # Request POST to create token
         response = api_client.create_token(username=os.getenv("USER"),
@@ -41,8 +45,8 @@ class TestWorkFlow3:
     def test_create_booking_various_travelers(self, api_client, api_validate, firstname, lastname, totalprice,
                                                                 depositpaid, checkin, checkout, additionalneeds):
         """Verify each of several concurrently-created bookings gets a unique ID and stores its own data correctly."""
-        logger.info(f"Step 2: When I create a new booking (no auth required)"
-                    f"\n\tThen the booking is created with unique ID\n\tAnd all booking details match creation data\n")
+        logger.info("Step 2: When I create a new booking (no auth required)"
+                    "\n\tThen the booking is created with unique ID\n\tAnd all booking details match creation data\n")
 
         # Define request body with booking details
         booking_data = {"firstname": firstname,
@@ -82,8 +86,8 @@ class TestWorkFlow3:
 
     def test_get_all_booking_ids(self, api_client, api_validate):
         """Verify all bookings created in the previous step appear in the full list, each exactly once."""
-        logger.info(f"\nStep 3: When I retrieve all booking IDs"
-                    f"\n\tThen the new bookings appear in the list\n\tAnd each booking_id occurs once")
+        logger.info("\nStep 3: When I retrieve all booking IDs"
+                    "\n\tThen the new bookings appear in the list\n\tAnd each booking_id occurs once")
 
         # Request GET to retrieve ids of all the bookings that exist within the API
         response = api_client.get_all_booking_ids()

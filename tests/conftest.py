@@ -1,7 +1,11 @@
-import pytest, requests, os
+import os
+
+import pytest
+import requests
+from dotenv import load_dotenv
+
 from libs.api_client import BookerAPIClient
 from libs.api_validate import APIValidate
-from dotenv import load_dotenv
 
 # Load environment variables (*.env)
 load_dotenv()

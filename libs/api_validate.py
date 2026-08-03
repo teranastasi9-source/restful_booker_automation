@@ -1,5 +1,8 @@
-from typing import Any, Dict
-import requests, logging
+import logging
+from typing import Any
+
+import requests
+
 logger = logging.getLogger(__name__)
 
 
@@ -40,7 +43,7 @@ class APIValidate:
         assert api_client.booking_data is not None, \
             f"booking_data not stored.\nExpected: not None\nActual: {api_client.booking_data}"
 
-    def assert_booking_data_matches(self, response: requests.Response, expected_data: Dict[str, Any]):
+    def assert_booking_data_matches(self, response: requests.Response, expected_data: dict[str, Any]):
         """ Validate all booking fields match expected data. Used for CREATE, GET, UPDATE, PATCH operations """
         res_body = response.json()
         actual_data = res_body.get("booking", res_body)

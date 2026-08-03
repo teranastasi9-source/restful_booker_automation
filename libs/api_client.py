@@ -1,5 +1,8 @@
-import requests, os, time
-from typing import Optional, Dict, Any
+import os
+import time
+from typing import Any
+
+import requests
 from dotenv import load_dotenv
 
 # Load environment variables (*.env)
@@ -11,9 +14,9 @@ class BookerAPIClient:
     def __init__(self, base_url: str):
         self.base_url = base_url
         self.session = requests.Session()
-        self.token: Optional[str] = None
-        self.booking_id: Optional[int] = None
-        self.booking_data: Optional[Dict[str, Any]] = None
+        self.token: str | None = None
+        self.booking_id: int | None = None
+        self.booking_data: dict[str, Any] | None = None
 
     def _make_request(self, method: str, url: str,
                       max_time:str = os.getenv("MAX_RESPONSE_TIME"), **kwargs) -> requests.Response:
@@ -65,7 +68,7 @@ class BookerAPIClient:
                                   url=f"{self.base_url}/booking",
                                   headers={"Content-Type": "application/json"})
 
-    def update_booking(self, booking_id: int, booking_data: Dict[str, Any]) -> requests.Response:
+    def update_booking(self, booking_id: int, booking_data: dict[str, Any]) -> requests.Response:
         """ [PUT] Updates a current booking (auth required) """
         return self._make_request(method="PUT",
                                   url=f"{self.base_url}/booking/{booking_id}",
@@ -74,7 +77,7 @@ class BookerAPIClient:
                                   headers={"Content-Type": "application/json",
                                            "Accept": "application/json"})
 
-    def partial_update_booking(self, booking_id: int, booking_data: Dict[str, Any]) -> requests.Response:
+    def partial_update_booking(self, booking_id: int, booking_data: dict[str, Any]) -> requests.Response:
         """ [PATCH] Updates a current booking with a partial payload (auth required) """
         return self._make_request(method="PATCH",
                                   url=f"{self.base_url}/booking/{booking_id}",
@@ -90,14 +93,14 @@ class BookerAPIClient:
                                   cookies={"token": self.token} if self.token else {})
 
     def update_booking_mocked(self, mocked_url: str, booking_id: int,
-                              booking_data: Dict[str, Any]) -> requests.Response:
+                              booking_data: dict[str, Any]) -> requests.Response:
         """ [PUT] Update booking with expired token (uses mock server) """
         return self._make_request(method="PUT",
                                   url=f"{mocked_url}/booking/{booking_id}",
                                   json=booking_data,
                                   cookies={"token": "ccb59d3efd94c3a"})
 
-    def update_booking_without_cookie(self, booking_id: int, booking_data: Dict[str, Any]) -> requests.Response:
+    def update_booking_without_cookie(self, booking_id: int, booking_data: dict[str, Any]) -> requests.Response:
         """ [PUT] Update booking without Cookie header (auth required but missing) """
         return self._make_request(method="PUT",
                                   url=f"{self.base_url}/booking/{booking_id}",

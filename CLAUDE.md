@@ -15,20 +15,23 @@ applies here unchanged.
 
 Whenever asked to review code in this project, always:
 
-1. **Check the code against the API test best-practices checklist below.** Flag violations as
+1. **Run ruff first**: `cd restful_booker_automation && ruff check .` (add `--fix` only if
+   asked to auto-fix, otherwise just report findings). Report every finding, don't silently
+   skip any.
+2. **Check the code against the API test best-practices checklist below.** Flag violations as
    review findings, don't just fix them silently — explain what's wrong and why.
-2. **Scan for stale comments or leftover files that don't match current test code.** This repo
+3. **Scan for stale comments or leftover files that don't match current test code.** This repo
    has real history of this: an old draft of `test_workflow_3.py` was left behind at the repo
    root as a stray untracked file (`_orig_check`) after a rewrite, never cleaned up. Don't
    assume every file in the repo root is meant to be there.
-3. **Don't trust a comment about live API behavior without verifying it.** If adding a new
+4. **Don't trust a comment about live API behavior without verifying it.** If adding a new
    endpoint/assertion, hit the real API (or check `reports/report_IntegrationWorkflows.html`
    from a recent run) before writing an assertion about what it returns — the same rule as
    the UI sibling project, for the same reason (comments about external behavior rot quietly).
-4. **Watch for duplicated hardcoded values** that should route through `.env` (via
+5. **Watch for duplicated hardcoded values** that should route through `.env` (via
    `os.getenv(...)`) or a single shared constant instead of being repeated inline across test
    files (e.g. the valid username/password, or a threshold value).
-5. **Never let a real secret reach `.env` without `.gitignore` covering it.** The credentials
+6. **Never let a real secret reach `.env` without `.gitignore` covering it.** The credentials
    currently in `.env` are the public, documented restful-booker demo credentials
    (`admin`/`password123`) — not sensitive — but if this pattern is ever reused for a project
    with real credentials, confirm `.gitignore` excludes `.env` *before* anything is staged.
@@ -82,5 +85,5 @@ Whenever asked to review code in this project, always:
 
 ## Running the suite
 
-See `README.md` for setup (copy `env.example` to `.env`) and run commands
-(`pytest -m workflow3`, etc.).
+See `README.md` for setup (copy `env.example` to `.env`), run commands
+(`pytest -m workflow3`, etc.), and the linting command.

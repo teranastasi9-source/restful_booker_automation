@@ -1,4 +1,9 @@
-import pytest, random, os, names, logging
+import logging
+import os
+import random
+
+import names
+import pytest
 from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
@@ -14,8 +19,8 @@ class TestWorkFlow1:
 
     def test_create_token(self, api_client, api_validate):
         """Verify a valid auth token is issued for correct credentials."""
-        logger.info(f"Step 1: Given valid authentication credentials\n\tWhen I request an authentication token"
-                    f"\n\tThen I receive a valid token\n")
+        logger.info("Step 1: Given valid authentication credentials\n\tWhen I request an authentication token"
+                    "\n\tThen I receive a valid token\n")
 
         # Request POST to create token
         response = api_client.create_token(username=os.getenv("USER"),
@@ -31,8 +36,8 @@ class TestWorkFlow1:
 
     def test_create_booking(self, api_client, api_validate):
         """Verify a new booking is created with a unique ID and the returned data matches what was sent."""
-        logger.info(f"Step 2: When I create a new booking (no auth required)"
-                    f"\n\tThen the booking is created with unique ID\n")
+        logger.info("Step 2: When I create a new booking (no auth required)"
+                    "\n\tThen the booking is created with unique ID\n")
 
         # Define request body with booking details
         booking_data = {"firstname": names.get_first_name(),
@@ -59,8 +64,8 @@ class TestWorkFlow1:
 
     def test_get_all_booking_ids(self, api_client, api_validate):
         """Verify the booking created in the previous step appears exactly once in the full list of booking IDs."""
-        logger.info(f"Step 3: When I retrieve all booking IDs"
-                    f"\n\tThen the new booking appears in the list\n")
+        logger.info("Step 3: When I retrieve all booking IDs"
+                    "\n\tThen the new booking appears in the list\n")
 
         # Request GET to retrieve ids of all the bookings that exist within the API
         response = api_client.get_all_booking_ids()
@@ -80,8 +85,8 @@ class TestWorkFlow1:
 
     def test_get_booking_by_id(self, api_client, api_validate):
         """Verify fetching the booking by its ID returns exactly the data it was created with."""
-        logger.info(f"Step 4: When I retrieve the booking by ID"
-                    f"\n\tThen all booking details match creation data\n")
+        logger.info("Step 4: When I retrieve the booking by ID"
+                    "\n\tThen all booking details match creation data\n")
 
         # Request GET to retrieve a specific booking based upon the booking id provided
         response = api_client.get_booking_by_id(booking_id=api_client.booking_id)
@@ -96,9 +101,9 @@ class TestWorkFlow1:
 
     def test_full_update_booking(self, api_client, api_validate):
         """Verify a full update (PUT, authenticated) changes lastname/checkout while preserving every other field."""
-        logger.info(f"Step 5: When I fully update the booking (PUT with token)"
-                    f"\n\tThen lastname and checkout are updated"
-                    f"\n\tAnd all other fields are preserved\n")
+        logger.info("Step 5: When I fully update the booking (PUT with token)"
+                    "\n\tThen lastname and checkout are updated"
+                    "\n\tAnd all other fields are preserved\n")
 
         # Define updated booking data for request body
         api_client.booking_data["lastname"] = names.get_last_name()                                     # Updated
@@ -118,8 +123,8 @@ class TestWorkFlow1:
 
     def test_verify_full_update_booking(self, api_client, api_validate):
         """Verify the full update from the previous step actually persisted when the booking is re-fetched."""
-        logger.info(f"Step 6: When I retrieve the booking by ID"
-                    f"\n\tThen the update is reflected correctly\n")
+        logger.info("Step 6: When I retrieve the booking by ID"
+                    "\n\tThen the update is reflected correctly\n")
 
         # Request GET to retrieve a specific booking based upon the booking id provided
         response = api_client.get_booking_by_id(booking_id=api_client.booking_id)
@@ -133,10 +138,10 @@ class TestWorkFlow1:
 
 
     def test_partial_update_booking(self, api_client, api_validate):
-        """Verify a partial update (PATCH, authenticated) changes only firstname and leaves every other field untouched."""
-        logger.info(f"Step 7: When I partially update the booking (PATCH with token)"
-                    f"\n\tThen only firstname is updated"
-                    f"\n\tAnd all other fields remain unchanged\n")
+        """Verify a partial PATCH update changes only firstname, leaving every other field untouched."""
+        logger.info("Step 7: When I partially update the booking (PATCH with token)"
+                    "\n\tThen only firstname is updated"
+                    "\n\tAnd all other fields remain unchanged\n")
 
         # Define updated booking data for request body
         partial_data = {"firstname": names.get_first_name()}                                        # Updated
@@ -156,8 +161,8 @@ class TestWorkFlow1:
 
     def test_verify_partial_update_booking(self, api_client, api_validate):
         """Verify the partial update from the previous step actually persisted when the booking is re-fetched."""
-        logger.info(f"Step 8: When I retrieve the booking by ID"
-                    f"\n\tThen the partial update is reflected correctly\n")
+        logger.info("Step 8: When I retrieve the booking by ID"
+                    "\n\tThen the partial update is reflected correctly\n")
 
         # Request GET to retrieve a specific booking based upon the booking id provided
         response = api_client.get_booking_by_id(booking_id=api_client.booking_id)
@@ -172,8 +177,8 @@ class TestWorkFlow1:
 
     def test_delete_booking(self, api_client, api_validate):
         """Verify an authenticated DELETE request removes the booking and returns the expected confirmation."""
-        logger.info(f"Step 9: When I delete the booking (DELETE with token)"
-                    f"\n\tThen the deletion is successful\n")
+        logger.info("Step 9: When I delete the booking (DELETE with token)"
+                    "\n\tThen the deletion is successful\n")
 
         # Request DELETE to delete a booking
         response = api_client.delete_booking(booking_id=api_client.booking_id)
@@ -188,8 +193,8 @@ class TestWorkFlow1:
 
     def test_verify_delete_booking_by_getting_booking_by_id(self, api_client, api_validate):
         """Verify the deleted booking can no longer be fetched by ID (returns 404)."""
-        logger.info(f"Step 10: When I attempt to retrieve the deleted booking"
-                    f"\n\tThen I receive 404 Not Found\n")
+        logger.info("Step 10: When I attempt to retrieve the deleted booking"
+                    "\n\tThen I receive 404 Not Found\n")
 
         # Request GET to retrieve a specific booking based upon the booking id provided
         response = api_client.get_booking_by_id(booking_id=api_client.booking_id)
@@ -204,8 +209,8 @@ class TestWorkFlow1:
 
     def test_verify_delete_booking_by_getting_all_booking_ids(self, api_client, api_validate):
         """Verify the deleted booking's ID no longer appears in the full list of booking IDs."""
-        logger.info(f"Step 11: When I retrieve all booking IDs again"
-                    f"\n\tThen the deleted booking no longer appears\n")
+        logger.info("Step 11: When I retrieve all booking IDs again"
+                    "\n\tThen the deleted booking no longer appears\n")
 
         # Request GET to retrieve ids of all the bookings that exist within the API
         response = api_client.get_all_booking_ids()
