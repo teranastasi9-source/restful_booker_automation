@@ -1,6 +1,6 @@
 # RESTful Booker API Test Automation - Python + requests
 
-Purpose: Python-based test automation framework for https://restful-booker.herokuapp.com. Portfolio demonstration of API automation and pytest best practices]
+Purpose: Python-based test automation framework for https://restful-booker.herokuapp.com. Portfolio demonstration of API automation and pytest best practices.
 
 ## Project Overview
 |Aspect| Details                                    |
@@ -175,7 +175,7 @@ restful_booker_automation/
 ### Rename 'env.example' file to '.env'
 
 ### Clone the repository
-git clone https://github.com/yourusername/restful_booker_automation.git
+git clone https://github.com/teranastasi9-source/restful_booker_automation.git
 
 ### Install dependencies
 pip install -r requirements.txt
@@ -203,6 +203,26 @@ Report includes:
 ## Troubleshooting
 Issue: ModuleNotFoundError: No module named '...'
   → Run: pip install -r requirements.txt
+
+
+## Working with Claude Code
+
+This project is read by [Claude Code](https://claude.com/claude-code) via `CLAUDE.md`
+(a standing code-review checklist) and two custom project-scoped skills in
+`.claude/skills/`:
+
+- **`add-workflow-step`** - the recipe for extending a workflow class or adding a new one:
+  where API client methods / validation helpers go, the docstring + Given/When/Then logging
+  convention, and - the most important step - verifying real API behavior before writing an
+  assertion about it, instead of guessing.
+- **`triage-api-test-failure`** - a decision process for telling a real regression apart from
+  an external API hiccup (this API runs on a free Heroku dyno, same cold-start pattern as the
+  `playwright_ui_automation` sibling project) or a state/ordering bug specific to this repo's
+  intentionally stateful workflow-class design.
+
+Both mirror the equivalent skills in `playwright_ui_automation`, adapted to this repo's own
+conventions rather than copied as-is - the two projects share a review philosophy, not
+identical rules.
 
 
 ## Contact

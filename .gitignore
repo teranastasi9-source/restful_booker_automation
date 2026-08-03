@@ -1,0 +1,9 @@
+# Environment variables (real credentials go here for a real project - never commit this)
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# pytest
+.pytest_cache/
