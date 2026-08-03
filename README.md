@@ -234,7 +234,7 @@ Issue: ModuleNotFoundError: No module named '...'
 ## Working with Claude Code
 
 This project is read by [Claude Code](https://claude.com/claude-code) via `CLAUDE.md`
-(a standing code-review checklist) and two custom project-scoped skills in
+(a standing code-review checklist) and three custom project-scoped skills in
 `.claude/skills/`:
 
 - **`add-workflow-step`** - the recipe for extending a workflow class or adding a new one:
@@ -245,9 +245,15 @@ This project is read by [Claude Code](https://claude.com/claude-code) via `CLAUD
   an external API hiccup (this API runs on a free Heroku dyno, same cold-start pattern as the
   `playwright_ui_automation` sibling project) or a state/ordering bug specific to this repo's
   intentionally stateful workflow-class design.
+- **`create-bug-ticket`** - once a failure is triaged and confirmed real, files it as a GitHub
+  Issue: drafts the title/repro steps/expected-vs-actual for review first, then files via
+  `gh issue create` - never auto-filed, and never for a failure that turned out to be the known
+  Heroku cold-start flake or a state/ordering issue between two steps. CI also opens an issue
+  automatically for a failed scheduled nightly run (see "CI" below) - this skill covers the
+  other case, when you notice a failure yourself.
 
-Both mirror the equivalent skills in `playwright_ui_automation`, adapted to this repo's own
-conventions rather than copied as-is - the two projects share a review philosophy, not
+All three mirror the equivalent skills in `playwright_ui_automation`, adapted to this repo's
+own conventions rather than copied as-is - the two projects share a review philosophy, not
 identical rules.
 
 
