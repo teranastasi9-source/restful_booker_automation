@@ -189,6 +189,30 @@ pip install -r requirements.txt
 ### Run all tests
 pytest tests/ -v -s
 
+## Run tests in Docker
+
+An alternative to the local setup above: the included `Dockerfile` builds a `python:3.11-slim`
+image with all dependencies installed, so there's no local Python/pip setup needed at all.
+
+```bash
+docker build -t restful-booker-automation .
+docker run --rm --env-file .env -v "$(pwd)/reports:/app/reports" restful-booker-automation
+```
+
+`--env-file .env` supplies `BASE_URL`/`USER`/`PASSWORD`/etc. at runtime rather than baking them
+into the image (`.env` is excluded via `.dockerignore`) - still just the public demo credentials
+here, but the right habit regardless. The `-v` mount writes the HTML report and log back out to
+`reports/` on the host. Pass extra pytest arguments after the image name, e.g.
+`docker run --rm --env-file .env -v "$(pwd)/reports:/app/reports" restful-booker-automation pytest -m workflow3 -v -s`.
+
+On Windows Git Bash specifically, prefix the command with `MSYS_NO_PATHCONV=1` (e.g.
+`MSYS_NO_PATHCONV=1 docker run --rm --env-file .env -v "$(pwd)/reports:/app/reports" ...`) -
+without it, Git Bash's automatic path translation silently mangles the `$(pwd)` mount so the
+container runs fine but the report never actually reaches the host. PowerShell/cmd and
+macOS/Linux shells aren't affected.
+
+This is a local/manual convenience, not part of CI - the GitHub Actions workflow already runs on
+a consistent `ubuntu-latest` runner, so containerizing it wouldn't add anything there.
 
 ## Expected output
 After running, you should see:
