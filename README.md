@@ -41,9 +41,10 @@ restful_booker_automation/
   CLAUDE.md                                - code-review checklist read by Claude Code
   Dockerfile                                 - optional containerized test run (see "Run tests in Docker")
   .dockerignore                                - keeps .git/caches/.env out of the Docker build context
+  .pre-commit-config.yaml                        - runs ruff automatically before each commit (see "Linting")
   docs/report_screenshot.png                 - report screenshot embedded below, for a no-clone preview
   pyproject.toml                               - ruff config
-  requirements-dev.txt                           - + ruff, for linting
+  requirements-dev.txt                           - + ruff and pre-commit, for linting
   libs/
     api_client.py                                    - API client wrapper for RESTful Booker
     api_validate.py                                  - validation methods for RESTful Booker
@@ -248,6 +249,17 @@ pip install -r requirements-dev.txt
 ruff check .          # report issues
 ruff check . --fix    # auto-fix what can be auto-fixed (import sorting, unused imports, ...)
 ```
+
+A `.pre-commit-config.yaml` is included so the same check can run automatically before every
+commit, instead of relying on remembering to run it (or waiting for CI to catch it):
+
+```bash
+pip install -r requirements-dev.txt
+pre-commit install    # one-time, per clone - wires the git hook
+```
+
+From then on, `git commit` runs `ruff check` on the staged files first and blocks the commit if
+it fails - the same rule CI enforces, just caught locally before it's pushed.
 
 ## CI
 
