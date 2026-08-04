@@ -1,6 +1,7 @@
 # RESTful Booker API Test Automation - Python + requests
 
 [![Tests](https://github.com/teranastasi9-source/restful_booker_automation/actions/workflows/tests.yml/badge.svg)](https://github.com/teranastasi9-source/restful_booker_automation/actions/workflows/tests.yml)
+![Tests](https://img.shields.io/badge/tests-31-brightgreen)
 
 Purpose: Python-based test automation framework for https://restful-booker.herokuapp.com. Portfolio demonstration of API automation and pytest best practices.
 
