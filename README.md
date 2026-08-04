@@ -38,6 +38,8 @@ restful_booker_automation/
   .github/workflows/tests.yml          - CI: lint + tests on push/PR, nightly schedule, manual
   .claude/skills/                        - project-scoped Claude Code skills (see below)
   CLAUDE.md                                - code-review checklist read by Claude Code
+  Dockerfile                                 - optional containerized test run (see "Run tests in Docker")
+  .dockerignore                                - keeps .git/caches/.env out of the Docker build context
   docs/report_screenshot.png                 - report screenshot embedded below, for a no-clone preview
   pyproject.toml                               - ruff config
   requirements-dev.txt                           - + ruff, for linting
@@ -53,6 +55,7 @@ restful_booker_automation/
     test_workflow_2.py                                     - Workflow 2: Authentication Token Lifecycle
     test_workflow_3.py                                     - Workflow 3: Multiple concurrent bookings
   .env                                              - environment variables (not committed)
+  env.example                                         - template for .env, safe to commit (public demo creds)
   pytest.ini                                          - pytest configuration
   requirements.txt                                      - Python dependencies
 ```
