@@ -228,7 +228,11 @@ Report includes:
   - Test step duration
   - Summary dashboard
 
-A recent run's report is committed at `reports/report_IntegrationWorkflows.html` so you can
+**Live report:** redeployed to GitHub Pages after every push to `main` - see it at
+[teranastasi9-source.github.io/restful_booker_automation](https://teranastasi9-source.github.io/restful_booker_automation/)
+without cloning anything.
+
+A recent run's report is also committed at `reports/report_IntegrationWorkflows.html` so you can
 see the results without running anything - open it directly in a browser.
 
 ![HTML test report](docs/report_screenshot.png)
