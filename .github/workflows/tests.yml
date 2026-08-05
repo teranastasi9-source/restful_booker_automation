@@ -6,9 +6,14 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    # Once a day, independent of anyone pushing - catches drift caused by the
-    # public restful-booker.herokuapp.com API itself, not just code changes.
-    - cron: "0 4 * * *"
+    # Once a week (Monday), independent of anyone pushing - catches drift caused by the
+    # public restful-booker.herokuapp.com API itself, not just code changes. Was daily until
+    # 2026-08-05: the playwright_ui_automation sibling project's OrangeHRM demo had a genuinely
+    # bad evening that night (verified directly, independent of CI), producing several days'
+    # worth of red runs to triage for no real signal - dropped all three portfolio repos to
+    # weekly together rather than waiting to see if this one hits the same pattern. Run on
+    # demand via workflow_dispatch any time a fresh report is actually needed.
+    - cron: "0 4 * * 1"
   workflow_dispatch: {}
 
 jobs:
