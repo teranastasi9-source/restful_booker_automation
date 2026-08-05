@@ -97,6 +97,7 @@ jobs:
     permissions:
       pages: write
       id-token: write
+      actions: write
     concurrency:
       group: "pages"
       cancel-in-progress: false
@@ -114,6 +115,21 @@ jobs:
         run: |
           mkdir -p _site
           cp reports/report_IntegrationWorkflows.html _site/index.html
+      - name: Delete stale github-pages artifact from a previous attempt, if any
+        # Re-running this workflow leaves the previous attempt's already-uploaded
+        # "github-pages" artifact in place - upload-pages-artifact always uses that fixed name,
+        # so a second attempt collides with it and deploy-pages fails with "Multiple artifacts
+        # named github-pages... Artifact count is 2" (same issue verified 2026-08-05 in the
+        # playwright_ui_automation sibling project). No-op on a normal first attempt.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts" \
+            --jq '.artifacts[] | select(.name=="github-pages") | .id' |
+          while read -r artifact_id; do
+            echo "Deleting stale github-pages artifact $artifact_id"
+            gh api -X DELETE "repos/${{ github.repository }}/actions/artifacts/$artifact_id"
+          done
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
