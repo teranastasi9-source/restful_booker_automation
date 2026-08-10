@@ -156,7 +156,7 @@ class TestWorkFlow2:
     def test_verify_full_update_booking_with_expired_token(self, api_client, api_validate):
         """Verify the rejected update from the previous (mocked) step did NOT change the real booking data."""
         logger.info("Step 7: When I retrieve the booking by ID"
-                    "\n\tThen all booking details remain unchange\n")
+                    "\n\tThen all booking details remain unchanged\n")
 
         # Request GET to retrieve a specific booking based upon the booking id provided
         response = api_client.get_booking_by_id(booking_id=api_client.booking_id)
@@ -197,7 +197,7 @@ class TestWorkFlow2:
     def test_verify_full_update_booking_without_cookie(self, api_client, api_validate):
         """Verify the rejected update from the previous step did NOT change the real booking data."""
         logger.info("Step 9: When I retrieve the booking by ID"
-                    "\n\tThen all booking details remain unchange\n")
+                    "\n\tThen all booking details remain unchanged\n")
 
         # Request GET to retrieve a specific booking based upon the booking id provided
         response = api_client.get_booking_by_id(booking_id=api_client.booking_id)
