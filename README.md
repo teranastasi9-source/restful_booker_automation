@@ -1,7 +1,7 @@
 # RESTful Booker API Test Automation - Python + requests
 
 [![Tests](https://github.com/teranastasi9-source/restful_booker_automation/actions/workflows/tests.yml/badge.svg)](https://github.com/teranastasi9-source/restful_booker_automation/actions/workflows/tests.yml)
-![Tests](https://img.shields.io/badge/tests-31-brightgreen)
+![Tests](https://img.shields.io/badge/tests-39-brightgreen)
 
 Purpose: Python-based test automation framework for https://restful-booker.herokuapp.com. Portfolio demonstration of API automation and pytest best practices.
 
@@ -28,7 +28,8 @@ Purpose: Python-based test automation framework for https://restful-booker.herok
   - REST API testing (CRUD operations, authentication, integration workflows, concurrency)
   - Pytest framework (fixtures, HTML report generation)
   - API Client Design (abstraction layer, session management, error handling)
-  - Security Testing (token validation, expired tokens, missing authentication headers)
+  - Security Testing (token validation, expired/missing/syntactically-invalid tokens, invalid credentials)
+  - Negative-path testing (nonexistent and malformed resource IDs across GET/PUT/PATCH/DELETE)
   - Mocking Strategy (isolation for impractical scenarios)
   - Documentation and reproducibility practices
 
@@ -56,6 +57,7 @@ restful_booker_automation/
     test_workflow_1.py                                     - Workflow 1: Full CRUD Lifecycle
     test_workflow_2.py                                     - Workflow 2: Authentication Token Lifecycle
     test_workflow_3.py                                     - Workflow 3: Multiple concurrent bookings
+    test_negative_scenarios.py                             - Negative-path checks not covered by the workflows above
   .env                                              - environment variables (not committed)
   env.example                                         - template for .env, safe to commit (public demo creds)
   pytest.ini                                          - pytest configuration
@@ -129,7 +131,7 @@ restful_booker_automation/
     Then I receive 403 Forbidden
 
     When I retrieve the booking by ID
-    Then all booking details remain unchange
+    Then all booking details remain unchanged
 
     When I partially update the booking (PATCH with token)
     Then only firstname is updated
@@ -174,6 +176,21 @@ restful_booker_automation/
     And each booking_id occurs once]
 
 
+## Negative scenarios -> test_negative_scenarios.py
+
+Independent checks, not chained steps in a workflow - each is self-contained and doesn't
+depend on test_workflow_1/2/3 having run first:
+
+- Authenticating with wrong credentials returns 200 with a `"Bad credentials"` reason, not a
+  token (the API's own behavior, verified directly - not 401/403)
+- GET on a booking ID that doesn't exist, and on a non-numeric booking ID, both return 404
+- PUT/PATCH/DELETE on a booking ID that doesn't exist all return 405, not a silently-created
+  or silently-successful response
+- PUT with a syntactically-invalid token (never issued by the API at all, not just expired or
+  missing) is rejected with 403, same as the missing/expired cases in Workflow 2 - creates and
+  cleans up its own throwaway booking for this, rather than depending on another test's booking
+
+
 ## Prerequisites
 - Python 3.8+ installed
 
@@ -190,6 +207,7 @@ pip install -r requirements.txt
 ### Run specific test
 - pytest tests/test_workflow_1.py -v -s
 - pytest -m workflow3
+- pytest -m negative_scenarios
 
 ### Run all tests
 pytest tests/ -v -s
