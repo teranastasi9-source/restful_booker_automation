@@ -105,3 +105,10 @@ class BookerAPIClient:
         return self._make_request(method="PUT",
                                   url=f"{self.base_url}/booking/{booking_id}",
                                   json=booking_data)
+
+    def update_booking_invalid_token(self, booking_id: int, booking_data: dict[str, Any]) -> requests.Response:
+        """ [PUT] Update booking with a syntactically-invalid token (not expired - just never valid) """
+        return self._make_request(method="PUT",
+                                  url=f"{self.base_url}/booking/{booking_id}",
+                                  json=booking_data,
+                                  cookies={"token": "not_a_real_token_at_all"})
