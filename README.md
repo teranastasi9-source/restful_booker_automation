@@ -321,6 +321,13 @@ it's about commit-writing habits, not this repo's own API/testing specifics), ad
 repo's own conventions rather than copied as-is where it matters - the two projects share a
 review philosophy, not identical rules.
 
+**On authorship:** this project's code was written with Claude Code as an assistant, including
+the API client abstraction (`libs/api_client.py`, `libs/api_validate.py`) and the workflow-class
+test structure. The design decisions - what to test, how to structure the three workflows plus
+the negative-scenario coverage added later, what quality bar to hold the code to (this file),
+and which of Claude Code's proposals to accept, reject, or send back for another iteration -
+were mine throughout.
+
 
 ## Contact
 - Anastasiia Zatorska
