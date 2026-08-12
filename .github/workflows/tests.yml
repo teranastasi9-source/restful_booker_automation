@@ -46,7 +46,15 @@ jobs:
         # badge-update push. Same pattern as the playwright_ui_automation sibling project.
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          COUNT=$(pytest --collect-only -q tests | tail -1 | grep -oE '^[0-9]+')
+          # -o addopts="" strips this repo's own pytest.ini addopts (which forces -v) for this
+          # one invocation, and counting "::" node-id lines directly (rather than parsing the
+          # trailing summary line) avoids the real bug that broke this step's first real run on
+          # main (2026-08-12): pytest pads that summary line with "=" to the detected terminal
+          # width ("=== N tests collected ==="), and separately, the repo's own -v in addopts
+          # switches --collect-only's output to a verbose tree view with no "::" node IDs at
+          # all - either one alone broke the naive `tail -1 | grep -oE '^[0-9]+'` this used
+          # before, on the real GitHub Actions runner even though it looked fine locally.
+          COUNT=$(pytest --collect-only -q -o addopts="" tests | grep -c "::")
           mkdir -p .github/badges
           echo "{\"schemaVersion\":1,\"label\":\"tests\",\"message\":\"$COUNT\",\"color\":\"brightgreen\"}" > .github/badges/tests.json
           if ! git diff --quiet -- .github/badges/tests.json; then
