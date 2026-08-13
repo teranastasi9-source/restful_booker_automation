@@ -315,9 +315,8 @@ This project is read by [Claude Code](https://claude.com/claude-code) via `CLAUD
   convention, and - the most important step - verifying real API behavior before writing an
   assertion about it, instead of guessing.
 - **`triage-api-test-failure`** - a decision process for telling a real regression apart from
-  an external API hiccup (this API runs on a free Heroku dyno, same cold-start pattern as the
-  `playwright_ui_automation` sibling project) or a state/ordering bug specific to this repo's
-  intentionally stateful workflow-class design.
+  an external API hiccup (this API runs on a free Heroku dyno, prone to cold-start slowness) or
+  a state/ordering bug specific to this repo's intentionally stateful workflow-class design.
 - **`create-bug-ticket`** - once a failure is triaged and confirmed real, files it as a GitHub
   Issue: drafts the title/repro steps/expected-vs-actual for review first, then files via
   `gh issue create` - never auto-filed, and never for a failure that turned out to be the known
