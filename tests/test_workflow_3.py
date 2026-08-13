@@ -14,7 +14,7 @@ load_dotenv()
 @pytest.mark.workflow3
 @pytest.mark.usefixtures("health_check")
 class TestWorkFlow3:
-    """ Workflow 3: Multiple concurrent bookings """
+    """ Workflow 3: Multiple booking creation """
 
     # List to track all created booking IDs for uniqueness validation
     created_booking_ids = []

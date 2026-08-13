@@ -74,7 +74,16 @@ class BookerAPIClient:
                             checkin: str | None = None, checkout: str | None = None) -> requests.Response:
         """ [GET] Returns the ids of all the bookings that exist within the API (no auth required).
             Optional query filters, per the API's own docs (see "API Documentation" in README):
-            firstname, lastname (exact match), checkin/checkout (>=, format CCYY-MM-DD). """
+            firstname, lastname (exact match), checkin/checkout (documented as >=, format
+            CCYY-MM-DD). firstname/lastname are verified reliable (test_workflow_3.py) and safe
+            to rely on. checkin/checkout are NOT: verified directly (2026-08-14) that checkout
+            alone returns nearly the entire unfiltered list (not actually filtering), checkin
+            alone doesn't reliably include a booking created moments earlier, and combining both
+            can return an empty result even for a booking that matches both. Exposed here to
+            match the documented API surface, but there's deliberately no test asserting specific
+            narrowing behavior for them - the live API's own implementation isn't trustworthy
+            enough to write a real assertion against, and a decorative always-passing one would
+            be worse than no test at all. """
         params = {key: value for key, value in {
             "firstname": firstname, "lastname": lastname,
             "checkin": checkin, "checkout": checkout,
