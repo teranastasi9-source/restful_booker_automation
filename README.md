@@ -11,7 +11,7 @@ Purpose: Python-based test automation framework for https://restful-booker.herok
 |**API Under Test**| RESTful Booker (Public demo REST API)      |
 |**Tool**| Pytest + requests + responses              |
 |**Auth**| Token (Cookie)                             |
-|**Test Types**| Integration Workflows + Mocked Response + Concurrency test |
+|**Test Types**| Integration Workflows + Negative-path + Mocked Response + Concurrency test |
 
 ## Comparison: Postman vs Python
 |Aspect|Postman + Newman|Pytest + requests + responses|
