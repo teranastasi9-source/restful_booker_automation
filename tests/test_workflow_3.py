@@ -45,7 +45,7 @@ class TestWorkFlow3:
                              ids=[i for i in range(1, 6)])
     def test_create_booking_various_travelers(self, api_client, api_validate, firstname, lastname, totalprice,
                                                                 depositpaid, checkin, checkout, additionalneeds):
-        """Verify each of several concurrently-created bookings gets a unique ID and stores its own data correctly."""
+        """Verify each traveler's booking gets a unique ID and stores its own data correctly."""
         logger.info("Step 2: When I create a new booking (no auth required)"
                     "\n\tThen the booking is created with unique ID\n\tAnd all booking details match creation data\n")
 

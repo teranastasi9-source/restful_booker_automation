@@ -61,11 +61,11 @@ Whenever asked to review code in this project, always:
   response-time check and any future shared header/auth change in one place.
 - Auth token and current booking state live on the session-scoped `api_client` fixture
   instance. Don't introduce a second, parallel way of tracking either.
-- `_make_request`'s `max_time` parameter defaults from `os.getenv("MAX_RESPONSE_TIME")`
-  evaluated at *function-definition* time, not per-call. It happens to work because
-  `load_dotenv()` runs at module import time here too, but it's a fragile pattern — reading
-  the env var inside the function body would be safer if this is ever copied elsewhere. Flag
-  it if you see the same default-arg-reads-env-var shape introduced in new code.
+- `_make_request`'s `max_time` parameter used to default from `os.getenv("MAX_RESPONSE_TIME")`
+  evaluated at *function-definition* time instead of per-call — a real bug, fixed 2026-08-14
+  (the env var is now read inside the function body; the default argument itself is a plain
+  `None`). Flag it if you see the same default-arg-reads-env-var shape introduced anywhere
+  else in new code.
 
 ### Mocking
 - Use `responses` (`@responses.activate`) only for scenarios the real API can't produce on

@@ -18,8 +18,9 @@ def api_client():
 
 @pytest.fixture(scope="class")
 def health_check(api_client):
-    """ Class-scoped fixture: simple health check endpoint to confirm whether the API is up and running
-        Runs once at the beginning of TestWorkFlow1 and TestWorkFlow2 """
+    """ Class-scoped fixture: simple health check endpoint to confirm whether the API is up and running.
+        Runs once at the beginning of every test class that uses it (currently all four: workflows 1-3
+        and the negative-scenarios class). """
     try:
         response = requests.get(url=f"{api_client.base_url}/ping", timeout=5)
         assert response.status_code == 201, f"Healthcheck failed: {response.status_code}"

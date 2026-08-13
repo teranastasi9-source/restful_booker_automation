@@ -11,7 +11,7 @@ Purpose: Python-based test automation framework for https://restful-booker.herok
 |**API Under Test**| RESTful Booker (Public demo REST API)      |
 |**Tool**| Pytest + requests + responses              |
 |**Auth**| Token (Cookie)                             |
-|**Test Types**| Integration Workflows + Negative-path + Mocked Response + Concurrency test |
+|**Test Types**| Integration Workflows + Negative-path + Mocked Response + Multi-booking creation |
 
 ## API Documentation
 The API's own docs - [restful-booker.herokuapp.com/apidoc](https://restful-booker.herokuapp.com/apidoc/index.html)
@@ -36,11 +36,11 @@ might suggest for a DELETE) - confirmed against a live request, not just assumed
 
 
 ## This project demonstrates:
-  - REST API testing (CRUD operations, authentication, integration workflows, concurrency)
+  - REST API testing (CRUD operations, authentication, integration workflows, multi-booking creation)
   - Pytest framework (fixtures, HTML report generation)
   - API Client Design (abstraction layer, session management, error handling)
   - Security Testing (token validation, expired/missing/syntactically-invalid tokens, invalid credentials)
-  - Negative-path testing (nonexistent and malformed resource IDs across GET/PUT/PATCH/DELETE)
+  - Negative-path testing (nonexistent resource IDs across GET/PUT/PATCH/DELETE, malformed IDs for GET)
   - Mocking Strategy (isolation for impractical scenarios)
   - Documentation and reproducibility practices
 
@@ -48,7 +48,7 @@ might suggest for a DELETE) - confirmed against a live request, not just assumed
 ## Project structure
 ```
 restful_booker_automation/
-  .github/workflows/tests.yml          - CI: lint + tests on push/PR, nightly schedule, manual
+  .github/workflows/tests.yml          - CI: lint + tests on push/PR, weekly schedule, manual
   .claude/skills/                        - project-scoped Claude Code skills (see below)
   CLAUDE.md                                - code-review checklist read by Claude Code
   Dockerfile                                 - optional containerized test run (see "Run tests in Docker")
@@ -67,7 +67,7 @@ restful_booker_automation/
     conftest.py                                          - fixtures (api_client, health_check, api_validate)
     test_workflow_1.py                                     - Workflow 1: Full CRUD Lifecycle
     test_workflow_2.py                                     - Workflow 2: Authentication Token Lifecycle
-    test_workflow_3.py                                     - Workflow 3: Multiple concurrent bookings
+    test_workflow_3.py                                     - Workflow 3: Multiple booking creation
     test_negative_scenarios.py                             - Negative-path checks not covered by the workflows above
   .env                                              - environment variables (not committed)
   env.example                                         - template for .env, safe to commit (public demo creds)
@@ -157,7 +157,7 @@ restful_booker_automation/
     When I attempt to retrieve the deleted booking
     Then I receive 404 Not Found]
 
-### Workflow 3: Multiple concurrent bookings -> test_workflow_3.py
+### Workflow 3: Multiple booking creation -> test_workflow_3.py
     [Given valid authentication credentials
     When I request an authentication token
     Then I receive a valid token
@@ -203,7 +203,8 @@ depend on test_workflow_1/2/3 having run first:
 
 
 ## Prerequisites
-- Python 3.8+ installed
+- Python 3.10+ installed (the codebase uses PEP 604 `X | None` union-type syntax throughout,
+  which needs 3.10+)
 
 
 ## Test execution

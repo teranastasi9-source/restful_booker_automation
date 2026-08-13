@@ -14,9 +14,10 @@ load_dotenv()
 @pytest.mark.usefixtures("health_check")
 class TestNegativeScenarios:
     """ Negative-path checks not covered by the chained CRUD/auth workflows: invalid credentials,
-    a nonexistent/malformed booking ID on every method, and a syntactically-invalid (not just
-    missing/expired) auth token. Self-contained - doesn't depend on test_workflow_1/2/3 having
-    run first, and establishes its own valid token partway through for the steps that need one. """
+    a nonexistent booking ID on every method (GET/PUT/PATCH/DELETE), a malformed (non-numeric)
+    booking ID on GET specifically, and a syntactically-invalid (not just missing/expired) auth
+    token. Self-contained - doesn't depend on test_workflow_1/2/3 having run first, and
+    establishes its own valid token partway through for the steps that need one. """
 
     def test_create_token_with_invalid_credentials(self, api_client, api_validate):
         """Verify authenticating with wrong credentials returns 200 with a 'Bad credentials' reason, not a token."""
