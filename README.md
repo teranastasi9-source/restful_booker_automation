@@ -13,6 +13,17 @@ Purpose: Python-based test automation framework for https://restful-booker.herok
 |**Auth**| Token (Cookie)                             |
 |**Test Types**| Integration Workflows + Negative-path + Mocked Response + Concurrency test |
 
+## API Documentation
+The API's own docs - [restful-booker.herokuapp.com/apidoc](https://restful-booker.herokuapp.com/apidoc/index.html)
+(generated with [apiDoc](https://apidocjs.com/), not Swagger/OpenAPI, despite how it's often
+described informally) - were the reference used while writing these tests: exact request/response
+shapes, required vs. optional fields, and which headers each endpoint accepts.
+
+One concrete example: the docs' own `DeleteBooking` example response is `HTTP/1.1 201 Created`
+(filed under a `Success 200` heading, but the actual example is 201, not the 204 REST convention
+might suggest for a DELETE) - confirmed against a live request, not just assumed - which is why
+`test_delete_booking` asserts `201` rather than the more commonly expected `204`.
+
 ## Comparison: Postman vs Python
 |Aspect|Postman + Newman|Pytest + requests + responses|
 |------|--------------|---------------------|
