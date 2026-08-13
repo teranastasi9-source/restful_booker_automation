@@ -8,9 +8,6 @@ logger = logging.getLogger(__name__)
 
 class APIValidate:
 
-    def __init__(self, max_response_time: int = 1000):
-        self.max_response_time = max_response_time
-
     def assert_status_code(self, response: requests.Response, expected: int = 200):
         """ Validate HTTP status code """
         logger.info(f"\nResponse status code: {response.status_code}")
