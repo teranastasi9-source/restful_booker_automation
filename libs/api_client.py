@@ -19,13 +19,21 @@ class BookerAPIClient:
         self.booking_data: dict[str, Any] | None = None
 
     def _make_request(self, method: str, url: str,
-                      max_time:str = os.getenv("MAX_RESPONSE_TIME"), **kwargs) -> requests.Response:
+                      max_time: str | None = None, **kwargs) -> requests.Response:
         """
         Internal helper to make requests and track response time
         All API methods use this internally.
         """
+        # Read env vars here, not as a default-argument value - a default argument is evaluated
+        # once at import time, so MAX_RESPONSE_TIME would silently freeze at whatever value (or
+        # lack of one) existed when this module first loaded, instead of the value actually set
+        # for this test run.
+        if max_time is None:
+            max_time = os.getenv("MAX_RESPONSE_TIME", "1500")
+        request_timeout = float(os.getenv("REQUEST_TIMEOUT", "10"))
+
         start_time = time.time()
-        response = self.session.request(method, url, **kwargs)
+        response = self.session.request(method, url, timeout=request_timeout, **kwargs)
         end_time = time.time()
         response_time = round(((end_time - start_time) * 1000), 2)
 
@@ -62,10 +70,18 @@ class BookerAPIClient:
         return self._make_request(method="GET",
                                   url=f"{self.base_url}/booking/{booking_id}")
 
-    def get_all_booking_ids(self) -> requests.Response:
-        """ [GET] Returns the ids of all the bookings that exist within the API (no auth required) """
+    def get_all_booking_ids(self, firstname: str | None = None, lastname: str | None = None,
+                            checkin: str | None = None, checkout: str | None = None) -> requests.Response:
+        """ [GET] Returns the ids of all the bookings that exist within the API (no auth required).
+            Optional query filters, per the API's own docs (see "API Documentation" in README):
+            firstname, lastname (exact match), checkin/checkout (>=, format CCYY-MM-DD). """
+        params = {key: value for key, value in {
+            "firstname": firstname, "lastname": lastname,
+            "checkin": checkin, "checkout": checkout,
+        }.items() if value is not None}
         return self._make_request(method="GET",
                                   url=f"{self.base_url}/booking",
+                                  params=params,
                                   headers={"Content-Type": "application/json"})
 
     def update_booking(self, booking_id: int, booking_data: dict[str, Any]) -> requests.Response:

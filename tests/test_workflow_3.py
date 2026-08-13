@@ -1,5 +1,6 @@
 import logging
 import os
+import time
 
 import pytest
 from dotenv import load_dotenv
@@ -103,3 +104,43 @@ class TestWorkFlow3:
         for booking_id in self.created_booking_ids:
             assert booking_id in booking_ids, f"Created booking_id: {booking_id} isn`t present in all booking IDs list"
             assert booking_ids.count(booking_id) == 1, f"Created booking_id: {booking_id} occurs more than once"
+
+
+    def test_get_all_booking_ids_filtered_by_name(self, api_client, api_validate):
+        """Verify GetBookingIds' documented firstname/lastname query filters actually narrow
+        the result set down to the matching booking(s)."""
+        logger.info("Step 4: When I create a booking with a distinctive name and retrieve"
+                    " booking IDs filtered by it\n\tThen only that booking is returned\n")
+
+        # A common name like "John Smith" isn't unique on this shared public demo API - it has
+        # accumulated hundreds of real "John"-named bookings from other people's test runs over
+        # time (verified directly: filtering by firstname=John&lastname=Smith alone returned
+        # 678 results, not 1). A timestamp-suffixed firstname sidesteps that collision, so this
+        # test can actually trust its own result set instead of guessing.
+        unique = int(time.time())
+        firstname, lastname = f"FilterCheck{unique}", "Traveler"
+        booking_data = {"firstname": firstname,
+                        "lastname": lastname,
+                        "totalprice": 111,
+                        "depositpaid": True,
+                        "bookingdates": {"checkin": "2026-04-01", "checkout": "2026-04-02"},
+                        "additionalneeds": "None"}
+
+        # Request POST to create a booking with the distinctive name
+        create_response = api_client.create_booking(booking_data=booking_data)
+        booking_id = create_response.json()["bookingid"]
+        logger.info(f"CreateBooking response: {create_response.json()}")
+
+        # Request GET with firstname/lastname filters, per the API's own docs (see
+        # "API Documentation" in README)
+        response = api_client.get_all_booking_ids(firstname=firstname, lastname=lastname)
+        res_body = response.json()
+        logger.info(f"GetBookingIds (filtered) response: {res_body}")
+
+        # Verify status code -> 200 Success
+        api_validate.assert_status_code(response, 200)
+
+        # Verify the filtered result contains exactly the one booking just created, nothing else
+        booking_ids = [booking["bookingid"] for booking in res_body]
+        assert booking_ids == [booking_id], \
+            f"Expected exactly [{booking_id}] for a uniquely-named booking.\nActual: {booking_ids}"

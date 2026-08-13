@@ -32,5 +32,4 @@ def health_check(api_client):
 @pytest.fixture(scope="function")
 def api_validate():
     """ Function-scoped fixture: create instance for each test to perform validations"""
-    max_time = int(os.getenv("MAX_RESPONSE_TIME", 1000))
-    return APIValidate(max_response_time=max_time)
+    return APIValidate()
