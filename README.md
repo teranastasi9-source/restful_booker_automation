@@ -184,7 +184,10 @@ restful_booker_automation/
 
     When I retrieve all booking IDs
     Then the new bookings appear in the list
-    And each booking_id occurs once]
+    And each booking_id occurs once
+
+    When I create a booking with a distinctive name and retrieve booking IDs filtered by it
+    Then only that booking is returned]
 
 
 ## Negative scenarios -> test_negative_scenarios.py
