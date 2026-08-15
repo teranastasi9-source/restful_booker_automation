@@ -25,8 +25,7 @@ pytest tests/test_workflow_N.py::TestWorkFlowN::test_name -v -s
 
 - A connection error, or a `TimeoutError` raised by `_make_request` itself (see
   `libs/api_client.py`) almost always points at the external API, not this codebase — the
-  free Heroku dyno this API runs on can be slow to respond after being idle, the same pattern
-  as `the-internet.herokuapp.com` in the `playwright_ui_automation` sibling project.
+  free Heroku dyno this API runs on can be slow to respond after being idle.
 - A status-code or body mismatch (`assert_status_code`/`assert_booking_data_matches` failure)
   is more likely a real bug or a real regression — but confirm with step 3 before concluding.
 - A `KeyError`/`AttributeError` on the response body usually means the API's real response
